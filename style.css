@@ -1,0 +1,147 @@
+:root {
+    --glass: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.15);
+    --primary: #4facfe;
+    --heading-light: #f8fafc;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; touch-action: manipulation; }
+
+/* Dynamic Backgrounds */
+body { height: 100vh; overflow: hidden; transition: background 0.8s ease; display: flex; justify-content: center; }
+.ttt-bg { background: radial-gradient(circle at top right, #1e293b, #0f172a); }
+.mem-bg { background: radial-gradient(circle at top right, #2e1065, #0f172a); }
+.snk-bg { background: radial-gradient(circle at top right, #064e3b, #020617); }
+
+.wrapper { width: 100%; max-width: 550px; padding: 15px; display: flex; flex-direction: column; height: 100%; }
+.main-title { text-align: center; font-weight: 800; letter-spacing: 5px; background: linear-gradient(to right, #00f2fe, #4facfe); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; font-size: 2rem; }
+
+.game-nav { display: flex; background: var(--glass); padding: 5px; border-radius: 15px; gap: 5px; margin-bottom: 15px; border: 1px solid var(--glass-border); }
+.nav-btn { flex: 1; padding: 10px; border: none; background: transparent; color: #aaa; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 0.85rem; }
+.nav-btn.active { background: white; color: black; }
+
+.game-card {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    background: var(--glass);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid var(--glass-border);
+    padding: 25px;
+    border-radius: 25px;
+    height: 82vh;
+    width: 100%;
+    overflow-y: auto;
+}
+.game-card.active { display: flex; animation: fadeIn 0.4s ease; }
+
+.status-bar { width: 100%; text-align: center; padding: 10px; background: rgba(0,0,0,0.4); border-radius: 12px; margin-bottom: 15px; font-weight: 600; color: var(--heading-light); letter-spacing: 1px; }
+
+/* TTT Mode Separated Buttons */
+.mode-container-separated { display: flex; width: 100%; gap: 15px; margin-bottom: 15px; }
+.mode-btn { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); padding: 12px; border-radius: 12px; color: white; cursor: pointer; font-weight: bold; }
+.active-tab { background: var(--primary) !important; box-shadow: 0 0 10px var(--primary); }
+
+.segmented-control { display: flex; background: rgba(0,0,0,0.2); border-radius: 12px; padding: 4px; width: 100%; margin-bottom: 15px; }
+.ttt-diff-btn, .mem-diff-btn { flex: 1; padding: 10px; border: none; background: transparent; color: white; border-radius: 8px; cursor: pointer; font-size: 0.85rem; font-weight: 600; }
+
+/* Grid Designs */
+.tic-tac-toe { display: grid; grid-template-columns: repeat(3, 90px); grid-template-rows: repeat(3, 90px); gap: 10px; }
+.box { background: rgba(255,255,255,0.05); border-radius: 12px; border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; font-weight: 800; cursor: pointer; color: white; }
+.win { background: #22c55e !important; }
+
+.memory-grid { display: grid; gap: 12px; padding-bottom: 40px; justify-content: center; width: 100%; }
+.mem-card { width: 65px; height: 65px; background: var(--primary); border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; transform-style: preserve-3d; transition: transform 0.4s; }
+
+.mem-card.flipped { transform: rotateY(180deg); background: white; }
+.mem-card span { display: none; }
+.mem-card.flipped span { display: block; transform: rotateY(180deg); color: #222; }
+
+/* Snake Symmetric D-Pad */
+#snakeCanvas { background: #000; border: 2px solid var(--glass-border); border-radius: 15px; margin-bottom: 15px; }
+.d-pad { display: grid; grid-template-areas: ". up ." "left . right" ". down ."; gap: 10px; margin-bottom: 15px; }
+.up { grid-area: up; } .left { grid-area: left; } .right { grid-area: right; } .down { grid-area: down; }
+.d-btn { width: 55px; height: 55px; border-radius: 50%; border: 1px solid var(--glass-border); background: var(--glass); color: white; font-size: 1.4rem; cursor: pointer; }
+
+.action-btn { width: 100%; background: linear-gradient(to right, #4facfe, #00f2fe); border: none; padding: 15px; border-radius: 15px; color: white; font-weight: bold; cursor: pointer; text-transform: uppercase; margin-top: auto; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+/* --- MEDIA QUERIES FOR RESPONSIVENESS --- */
+
+/* For Small Mobile Screens (Width < 400px) */
+@media (max-width: 400px) {
+    .main-title {
+        font-size: 1.6rem;
+        letter-spacing: 2px;
+    }
+
+    .game-card {
+        padding: 15px; /* Less padding to save space */
+        height: 85vh;  /* More height for content */
+    }
+
+    /* Shrink Tic Tac Toe Grid */
+    .tic-tac-toe {
+        grid-template-columns: repeat(3, 75px);
+        grid-template-rows: repeat(3, 75px);
+        gap: 8px;
+    }
+    .box {
+        font-size: 2rem;
+    }
+
+    /* Shrink Memory Cards */
+    .memory-grid {
+        gap: 8px;
+    }
+    .mem-card {
+        width: 55px;
+        height: 55px;
+        font-size: 1.5rem;
+    }
+
+    /* Shrink Snake Canvas and D-Pad */
+    #snakeCanvas {
+        width: 260px;
+        height: 260px;
+    }
+    .d-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 1.1rem;
+    }
+}
+
+/* For Tablets and Larger Screens (Width > 768px) */
+@media (min-width: 768px) {
+    .wrapper {
+        max-width: 650px; /* Allow a wider look on PC */
+    }
+    
+    .tic-tac-toe {
+        grid-template-columns: repeat(3, 110px);
+        grid-template-rows: repeat(3, 110px);
+    }
+
+    .mem-card {
+        width: 85px;
+        height: 85px;
+        font-size: 2.2rem;
+    }
+}
+
+/* Landscape Mode Fix (For phones held sideways) */
+@media (max-height: 500px) and (orientation: landscape) {
+    .wrapper {
+        flex-direction: row;
+        max-width: 95%;
+    }
+    .game-card {
+        height: 90vh;
+    }
+    .main-title {
+        display: none; /* Hide title to save vertical space */
+    }
+}
