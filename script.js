@@ -13,7 +13,7 @@ function showGame(game, btn) {
     if(game === 'mem') initMemory();
 }
 
-// ================= TIC TAC TOE (UNBEATABLE) =================
+// ================= TIC TAC TOE =================
 const tttBoxes = document.querySelectorAll(".box");
 const tttInfo = document.querySelector(".ttt-info");
 const tttDiffBtns = document.querySelectorAll(".ttt-diff-btn");
@@ -130,17 +130,19 @@ tttBoxes.forEach((b, i) => b.addEventListener("click", () => handleTTTClick(i)))
 document.getElementById("pve-btn").onclick = function() { tttIsBot = true; this.classList.add('active-tab'); document.getElementById('pvp-btn').classList.remove('active-tab'); document.getElementById('ttt-diff-box').style.display='flex'; initTTT(); };
 document.getElementById("pvp-btn").onclick = function() { tttIsBot = false; this.classList.add('active-tab'); document.getElementById('pve-btn').classList.remove('active-tab'); document.getElementById('ttt-diff-box').style.display='none'; initTTT(); };
 
-// ================= CARD FLIP (3x4 & 4x4 GRIDS) =================
-let memDiff = 'easy', flipped = [], matched = 0;
+// ================= CARD FLIP (MOVES TRACKER) =================
+let memDiff = 'easy', flipped = [], matched = 0, moves = 0;
 const icons = ["🍎","🍌","🍇","🍓","🍒","🍍","🥝","🍉","🚀","🎮","🏀","🎲","💎","🌈","🎨","🧩"];
 
 function initMemory() {
     const grid = document.getElementById("memory-grid");
-    grid.innerHTML = ""; flipped = []; matched = 0;
+    grid.innerHTML = ""; flipped = []; matched = 0; moves = 0;
+    document.querySelector(".mem-info").innerText = `Moves: ${moves}`;
+    
     let pairs = 6, cols = 4;
-    if(memDiff === 'easy') { pairs = 6; cols = 4; } // 3x4
-    else if(memDiff === 'medium') { pairs = 8; cols = 4; } // 4x4
-    else { pairs = 12; cols = 4; } // 6x4
+    if(memDiff === 'easy') { pairs = 6; cols = 4; } 
+    else if(memDiff === 'medium') { pairs = 8; cols = 4; } 
+    else { pairs = 12; cols = 4; } 
     
     grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
     let gameIcons = [...icons.slice(0, pairs), ...icons.slice(0, pairs)].sort(() => Math.random() - 0.5);
@@ -151,12 +153,15 @@ function initMemory() {
         card.onclick = () => {
             if(flipped.length < 2 && !card.classList.contains('flipped')) {
                 card.classList.add('flipped'); flipped.push(card);
-                if(flipped.length === 2) setTimeout(() => {
-                    if(flipped[0].innerHTML === flipped[1].innerHTML) matched++;
-                    else flipped.forEach(c => c.classList.remove('flipped'));
-                    flipped = [];
-                    document.querySelector(".mem-info").innerText = `Pairs Found: ${matched}`;
-                }, 600);
+                if(flipped.length === 2) {
+                    moves++;
+                    document.querySelector(".mem-info").innerText = `Moves: ${moves}`;
+                    setTimeout(() => {
+                        if(flipped[0].innerHTML === flipped[1].innerHTML) matched++;
+                        else flipped.forEach(c => c.classList.remove('flipped'));
+                        flipped = [];
+                    }, 600);
+                }
             }
         };
         grid.appendChild(card);
@@ -167,7 +172,7 @@ document.querySelectorAll(".mem-diff-btn").forEach(btn => btn.onclick = function
     this.classList.add('active-tab'); memDiff = this.dataset.level; initMemory();
 });
 
-// ================= SNAKE PRO (8 SPEED LEVELS) =================
+// ================= SNAKE PRO =================
 const canvas = document.getElementById("snakeCanvas");
 const ctx = canvas.getContext("2d");
 let snake, food, direction, score, candyCount;
@@ -186,9 +191,11 @@ function runSnake() {
     const head = {...snake[0]};
     if(direction === 'up') head.y--; if(direction === 'down') head.y++;
     if(direction === 'left') head.x--; if(direction === 'right') head.x++;
+    
     if(head.x<0 || head.x>=20 || head.y<0 || head.y>=20 || snake.some(s=>s.x===head.x && s.y===head.y)) {
-        isSnakeRunning = false; alert("Snake Died! Score: " + score); return;
+        isSnakeRunning = false; alert("Game Over! Score: " + score); return;
     }
+    
     snake.unshift(head);
     if(head.x === food.x && head.y === food.y) {
         score += 10; candyCount++;
@@ -211,13 +218,5 @@ function changeDir(d) {
     if(d==='left' && direction!=='right') direction='left';
     if(d==='right' && direction!=='left') direction='right';
 }
-
-window.addEventListener("keydown", e => {
-    let k = e.key.toLowerCase();
-    if(k==="arrowup" || k==="w") changeDir('up');
-    if(k==="arrowdown" || k==="s") changeDir('down');
-    if(k==="arrowleft" || k==="a") changeDir('left');
-    if(k==="arrowright" || k==="d") changeDir('right');
-});
 
 initTTT();
