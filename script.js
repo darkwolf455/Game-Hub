@@ -211,6 +211,53 @@ function runSnake() {
     if(lvl >= speedLevels.length) lvl = speedLevels.length - 1;
     snakeTimeout = setTimeout(runSnake, speedLevels[lvl]);
 }
+// Add Keyboard Controls for Snake
+window.addEventListener("keydown", (e) => {
+    if (!isSnakeRunning) return; // Only process keys if the game is active
+
+    switch(e.key) {
+        case "ArrowUp":
+        case "w":
+        case "W":
+            changeDir('up');
+            break;
+        case "ArrowDown":
+        case "s":
+        case "S":
+            changeDir('down');
+            break;
+        case "ArrowLeft":
+        case "a":
+        case "A":
+            changeDir('left');
+            break;
+        case "ArrowRight":
+        case "d":
+        case "D":
+            changeDir('right');
+            break;
+    }
+
+    // Prevent arrow keys from scrolling the page while playing
+    if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.key) > -1) {
+        e.preventDefault();
+    }
+});
+
+function showGame(game, btn) {
+    isSnakeRunning = false;
+    clearTimeout(snakeTimeout);
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.game-card').forEach(c => c.classList.remove('active'));
+    document.getElementById(game + '-container').classList.add('active');
+    document.body.className = game + '-bg';
+    
+    if(game === 'ttt') initTTT();
+    if(game === 'mem') initMemory();
+    if(game === 'snk') startSnake(); // Add this line
+}
+
 
 function changeDir(d) {
     if(d==='up' && direction!=='down') direction='up';
