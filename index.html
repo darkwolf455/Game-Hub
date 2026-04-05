@@ -3,13 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Game Hub Pro</title>
+    <title>Retro Hub Pro</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
 </head>
 <body class="ttt-bg">
-    <div class="background-overlay"></div>
-    
     <div class="wrapper">
         <header>
             <h1 class="main-title">RETRO HUB</h1>
@@ -26,8 +24,8 @@
                 <div class="status-bar ttt-info">Current Turn: X</div>
                 <div class="ttt-controls">
                     <div class="mode-container-separated">
-                        <button class="mode-btn active-tab" id="pvp-btn">P &nbsp; vs &nbsp; P</button>
-                        <button class="mode-btn" id="pve-btn">P &nbsp; vs &nbsp; Bot</button>
+                        <button class="mode-btn active-tab" id="pvp-btn">P vs P</button>
+                        <button class="mode-btn" id="pve-btn">P vs Bot</button>
                     </div>
                     <div class="segmented-control" id="ttt-diff-box" style="display: none;">
                         <button class="ttt-diff-btn active-tab" data-level="easy">Kid</button>
@@ -45,7 +43,7 @@
 
             <!-- CARD FLIP SECTION -->
             <section id="mem-container" class="game-card">
-                <div class="status-bar mem-info">Pairs Found: 0</div>
+                <div class="status-bar mem-info">Moves: 0</div>
                 <div class="segmented-control">
                     <button class="mem-diff-btn active-tab" data-level="easy">Easy</button>
                     <button class="mem-diff-btn" data-level="medium">Medium</button>
